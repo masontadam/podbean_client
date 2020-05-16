@@ -23,7 +23,8 @@ setup(
     author_email="masontadam@gmail.com",
 
     install_requires = [
-        # requirements go here later
+        "requests_oauthlib",
+        "requests"
     ],
 
     extras_require = {
