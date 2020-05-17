@@ -3,11 +3,11 @@ import requests
 
 class PodBeanClient(object):
     # PodBean API Enpoints
-    auth_base_url = "https://api.podbean.com/v1/dialog/oauth"
-    token_url = "https://api.podbean.com/v1/oauth/token"
-    podcast_url = "https://api.podbean.com/v1/podcasts"
-    episodes_url = "https://api.podbean.com/v1/episodes"
-    auth_upload_base_url = "https://api.podbean.com/v1/files/uploadAuthorize"
+    auth_base_url = 'https://api.podbean.com/v1/dialog/oauth'
+    token_url = 'https://api.podbean.com/v1/oauth/token'
+    podcast_url = 'https://api.podbean.com/v1/podcasts'
+    episodes_url = 'https://api.podbean.com/v1/episodes'
+    auth_upload_base_url = 'https://api.podbean.com/v1/files/uploadAuthorize'
 
     def __init__(self, client_id=None, client_secret=None, scopes=None, redirect_uri=None):
         self.client_id = client_id
@@ -20,6 +20,13 @@ class PodBeanClient(object):
         self.client_secret = app.config['CLIENT_SECRET']
         self.redirect_uri = app.config['REDIRECT_URI']
         self.scopes = app.config['SCOPES']
+
+        if self.client_id is None or self.client_secret is None \
+            or self.redirect_uri is None or self.scopes is None:
+            
+            raise ValueError('Must set all of the following app.config values: '
+                'CLIENT_ID, CLIENT_SECRET, REDIRECT_URI, and SCOPES. '
+                'These values can be found in your PodBean Developer console.')
 
     def get_authorization_url(self):
         session = OAuth2Session(self.client_id, redirect_uri=self.redirect_uri,
@@ -35,10 +42,10 @@ class PodBeanClient(object):
 
     def _authorize_upload(self, token, file_name, file_size, content_type):
         params = {
-            "access_token" : token,
-            "filename" : file_name,
-            "filesize" : file_size,
-            "content_type" : content_type
+            'access_token' : token,
+            'filename' : file_name,
+            'filesize' : file_size,
+            'content_type' : content_type
         }
         return requests.get(self.auth_upload_base_url, params=params)
 
@@ -55,8 +62,8 @@ class PodBeanClient(object):
 
             # Attempt with Requests module
             headers = {
-                "Content-Type": str(content_type),
-                "Content-Length": str(file_size)
+                'Content-Type': str(content_type),
+                'Content-Length': str(file_size)
             }
 
             return requests.put(presigned_url, data=file, headers=headers), file_key
@@ -68,9 +75,9 @@ class PodBeanClient(object):
         episode_list = []
 
         params = {
-            "offset" : "0",
-            "access_token" : token,
-            "limit" : "20"
+            'offset' : '0',
+            'access_token' : token,
+            'limit' : '20'
         }
 
         has_more = True
@@ -84,27 +91,27 @@ class PodBeanClient(object):
 
     def get_podcast_info(self, token):
         params = {
-            "access_token" : token
+            'access_token' : token
         }
         return requests.get(self.podcast_url, params=params)
 
     def publish_episode(self, token, title, desc, media_key, logo_key):
         params = {
-            "access_token" : token,
-            "title" : title,
-            "content" : desc,
-            "status" : "publish",
-            "type" : "public",
-            "media_key" : media_key,
-            "logo_key" : logo_key
+            'access_token' : token,
+            'title' : title,
+            'content' : desc,
+            'status' : 'publish',
+            'type' : 'public',
+            'media_key' : media_key,
+            'logo_key' : logo_key
         }
         return requests.post(self.episodes_url, data=params)
 
     def update_episode(self, eid, token, title, desc, media_key, logo_key):
         params = {        
-            "access_token" : token,
-            "status" : "publish",
-            "type" : "public",
+            'access_token' : token,
+            'status' : 'publish',
+            'type' : 'public',
         }
 
         if title != '':
@@ -116,4 +123,4 @@ class PodBeanClient(object):
         if logo_key != '':
             params['logo_key'] = logo_key
 
-        return requests.post(self.episodes_url + "/{}".format(eid), data=params)
+        return requests.post(self.episodes_url + '/{}'.format(eid), data=params)
