@@ -32,7 +32,8 @@ setup(
             "pytest >= 3.7",
             "check-manifest",
             "twine",
-            "Flask"
+            "Flask",
+            "dotenv"
         ],
     },
 )
