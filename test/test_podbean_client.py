@@ -4,6 +4,7 @@ import test_utils as utils
 import requests
 import pytest
 import flask
+import os
 
 def test_unititialized_object():
     client = PodBeanClient()
@@ -100,5 +101,52 @@ def test_get_auth_token():
 
     assert list(response.keys()) == correct_keys
 
-def test_upload_file():
+    test.ACCESS_TOKEN = response['access_token']
 
+def test_upload_file():
+    client = PodBeanClient(client_id=test.CLIENT_ID, 
+        client_secret=test.CLIENT_SECRET, 
+        scopes=test.SCOPES, 
+        redirect_uri=test.REDIRECT_URI)
+
+    # Test audio/mpeg
+    with open('test.mp3', 'wb') as f:
+        # 10mb file
+        f.seek(10485760-1)
+        f.write(b'\0')
+        f.close()
+    with open('test.mp3', 'rb') as f:
+        mp3_response = client.upload_file(test.ACCESS_TOKEN, f, 'test.mp3', 
+            10485760-1, 'audio/mpeg')
+        f.close()
+
+    # Test image/jpeg
+    with open('test.jpg', 'wb') as f:
+        # 10mb file
+        f.seek(1048576-1)
+        f.write(b'\0')
+        f.close()
+    with open('test.jpg', 'rb') as f:
+        jpg_response = client.upload_file(test.ACCESS_TOKEN, f, 'test.jpg', 
+            10485760-1, 'image/jpeg')
+        f.close()
+            
+    # Test image/png
+    with open('test.png', 'wb') as f:
+        # 10mb file
+        f.seek(1048576-1)
+        f.write(b'\0')
+        f.close()
+    with open('test.png', 'rb') as f:
+        png_response = client.upload_file(test.ACCESS_TOKEN, f, 'test.png', 
+            10485760-1, 'image/png')
+        f.close()
+
+    # Cleanup FS
+    os.remove('test.mp3')            
+    os.remove('test.jpg')
+    os.remove('test.png')
+
+    assert mp3_response[0].status_code == requests.codes.ok
+    assert jpg_response[0].status_code == requests.codes.ok
+    assert png_response[0].status_code == requests.codes.ok
