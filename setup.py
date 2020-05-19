@@ -6,7 +6,7 @@ def readme():
 
 setup(
     name="podbean_client",
-    version="1.0.0",
+    version="1.0.1",
     description="A Python client library for the Podbean API!",
     py_modules=["podbean_client"],
     package_dir={"": "src"},
