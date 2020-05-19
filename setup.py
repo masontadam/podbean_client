@@ -1,7 +1,8 @@
 from setuptools import setup
 
-with open("README.md", "r") as fh:
-    long_description = fh.read()
+def readme():
+    with open("README.rst", "r") as fh:
+        return fh.read()
 
 setup(
     name="podbean_client",
@@ -9,8 +10,7 @@ setup(
     description="A Python client library for the Podbean API!",
     py_modules=["podbean_client"],
     package_dir={"": "src"},
-    long_description=long_description,
-    long_description_content_type="text/markdown",
+    long_description=readme(),
     classifiers=[
         "Programming Language :: Python :: 3",
         "Programming Language :: Python :: 3.6",
