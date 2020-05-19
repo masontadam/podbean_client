@@ -60,7 +60,6 @@ class PodBeanClient(object):
             expire_at = response_json['expire_at']
             file_key = response_json['file_key']
 
-            # Attempt with Requests module
             headers = {
                 'Content-Type': str(content_type),
                 'Content-Length': str(file_size)

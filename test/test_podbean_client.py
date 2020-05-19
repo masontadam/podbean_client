@@ -1,6 +1,6 @@
 from podbean_client import PodBeanClient
-from config import TestConfig as test
-import utils
+from test_config import TestConfig as test
+import test_utils as utils
 import requests
 import pytest
 import flask
@@ -99,3 +99,6 @@ def test_get_auth_token():
     'refresh_token', 'expires_at']
 
     assert list(response.keys()) == correct_keys
+
+def test_upload_file():
+
