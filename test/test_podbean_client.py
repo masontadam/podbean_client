@@ -142,11 +142,66 @@ def test_upload_file():
             10485760-1, 'image/png')
         f.close()
 
-    # Cleanup FS
-    os.remove('test.mp3')            
-    os.remove('test.jpg')
-    os.remove('test.png')
-
     assert mp3_response[0].status_code == requests.codes.ok
     assert jpg_response[0].status_code == requests.codes.ok
     assert png_response[0].status_code == requests.codes.ok
+
+    test.AUDIO_KEY = mp3_response[1]
+    test.IMAGE_KEY = jpg_response[1]
+
+def test_get_all_episodes():
+    client = PodBeanClient(client_id=test.CLIENT_ID, 
+        client_secret=test.CLIENT_SECRET, 
+        scopes=test.SCOPES, 
+        redirect_uri=test.REDIRECT_URI)
+
+    episodes = client.get_all_episodes(test.ACCESS_TOKEN)
+
+    assert episodes != []
+
+    test.EID = episodes[-1]['id']
+
+def test_get_podcast_info():
+    client = PodBeanClient(client_id=test.CLIENT_ID, 
+        client_secret=test.CLIENT_SECRET, 
+        scopes=test.SCOPES, 
+        redirect_uri=test.REDIRECT_URI)
+
+    response = client.get_podcast_info(test.ACCESS_TOKEN)
+
+    assert response.status_code == requests.codes.ok
+
+def test_publish_episode():
+    client = PodBeanClient(client_id=test.CLIENT_ID, 
+        client_secret=test.CLIENT_SECRET, 
+        scopes=test.SCOPES, 
+        redirect_uri=test.REDIRECT_URI)
+
+    test_title = "Test Title"
+    test_desc = "Test Description"
+
+    response = client.publish_episode(test.ACCESS_TOKEN, test_title, test_desc,
+        test.AUDIO_KEY, test.IMAGE_KEY)
+
+    assert response.status_code == requests.codes.ok
+
+def test_update_episode():
+    client = PodBeanClient(client_id=test.CLIENT_ID, 
+        client_secret=test.CLIENT_SECRET, 
+        scopes=test.SCOPES, 
+        redirect_uri=test.REDIRECT_URI)
+
+    test_title = "Test Title"
+    test_desc = "Test Description"
+
+    response = client.update_episode(test.EID, test.ACCESS_TOKEN, test_title,
+        test_desc, test.AUDIO_KEY, test.IMAGE_KEY)
+    print(response.content)
+
+    assert response.status_code == requests.codes.ok
+
+def test_cleaup():
+    # Cleanup FS
+    os.remove('test.mp3')
+    os.remove('test.jpg')
+    os.remove('test.png')

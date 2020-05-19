@@ -107,19 +107,14 @@ class PodBeanClient(object):
         return requests.post(self.episodes_url, data=params)
 
     def update_episode(self, eid, token, title, desc, media_key, logo_key):
-        params = {        
+        params = {
             'access_token' : token,
+            'title' : title,
+            'content' : desc,
             'status' : 'publish',
             'type' : 'public',
+            'media_key' : media_key,
+            'logo_key' : logo_key
         }
-
-        if title != '':
-            params['title'] = title
-        if desc != '':
-            params['content'] = desc
-        if media_key != '':
-            params['media_key'] = media_key
-        if logo_key != '':
-            params['logo_key'] = logo_key
 
         return requests.post(self.episodes_url + '/{}'.format(eid), data=params)

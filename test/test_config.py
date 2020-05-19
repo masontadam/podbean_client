@@ -17,6 +17,10 @@ class TestConfig():
     ACCESS_TOKEN = ''
     STATE = ''
 
+    AUDIO_KEY = ''
+    IMAGE_KEY = ''
+    EID = ''
+
     AUTH_BASE_URL = 'https://api.podbean.com/v1/dialog/oauth'
     TOKEN_URL = 'https://api.podbean.com/v1/oauth/token'
     PODCAST_URL = 'https://api.podbean.com/v1/podcasts'
