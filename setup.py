@@ -5,7 +5,7 @@ with open("README.md", "r") as fh:
 
 setup(
     name="podbean_client",
-    version="0.0.0",
+    version="1.0.0",
     description="A Python client library for the Podbean API!",
     py_modules=["podbean_client"],
     package_dir={"": "src"},

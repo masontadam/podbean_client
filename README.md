@@ -14,7 +14,3 @@ podbean = PodBeanClient()
 
 # etc
 ```
-
-## TODO
-
-[TODO List](./TODO.md)
