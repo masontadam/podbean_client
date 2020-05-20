@@ -34,7 +34,7 @@ setup(
             "check-manifest",
             "twine",
             "Flask",
-            "dotenv"
+            "python-dotenv"
         ],
     },
 )
