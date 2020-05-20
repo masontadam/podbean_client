@@ -11,6 +11,7 @@ setup(
     py_modules=["podbean_client"],
     package_dir={"": "src"},
     long_description=readme(),
+    long_description_content_type="text/x-rst",
     classifiers=[
         "Programming Language :: Python :: 3",
         "Programming Language :: Python :: 3.6",
